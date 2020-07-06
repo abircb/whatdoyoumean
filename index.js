@@ -1,6 +1,7 @@
 'use strict'
 
 const Transform = require('stream').Transform
+const IncorrectFormatError = require('./helpers/IncorrectFormatError')
 
 class WDYM extends Transform {
   /**
@@ -14,18 +15,23 @@ class WDYM extends Transform {
     input.split(/\n/).forEach((line) => {
       const re = /([^ ]*) ([^ ]*) ([^ ]*) \[([^\]]*)\] "([^"]*)" ([^ ]*) ([^ ]*)/
       const matches = line.match(re)
-      console.log(matches)
       if (matches) {
-        const log = {
-          remoteHost: matches[1],
-          remoteLogName: matches[2],
-          authUser: matches[3],
-          date: new Date(matches[4]),
-          request: matches[5],
-          status: Number(matches[6]),
-          size: Number(matches[7]) || 0,
-        }
-        this.push(JSON.stringify(log))
+        try {
+          const log = {
+            remoteHost: matches[1],
+            remoteLogName: matches[2],
+            authUser: matches[3],
+            date: !Date.parse(matches[4])
+              ? 'indecipherable'
+              : new Date(matches[4]),
+            request: matches[5],
+            status: Number(matches[6]) || 'Invalid Status Code',
+            size: Number(matches[7]) || 0,
+          }
+          this.push(JSON.stringify(log))
+        } catch (Error) {}
+      } else {
+        throw new IncorrectFormatError('ss')
       }
     })
     callback()
