@@ -1,0 +1,19 @@
+{
+  "name": "what-do-you-mean",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/abircb/wdym.git"
+  },
+  "author": "Abir Bhushan",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/abircb/wdym/issues"
+  },
+  "homepage": "https://github.com/abircb/wdym#readme"
+}
