@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "npm test"
+    "test": "mocha"
   },
   "repository": {
     "type": "git",
@@ -15,5 +15,10 @@
   "bugs": {
     "url": "https://github.com/abircb/wdym/issues"
   },
-  "homepage": "https://github.com/abircb/wdym#readme"
+  "homepage": "https://github.com/abircb/wdym#readme",
+  "devDependencies": {
+    "mocha": "^8.0.1",
+    "prettier": "^2.0.5",
+    "should": "^13.2.3"
+  }
 }
