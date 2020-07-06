@@ -16,20 +16,18 @@ class WDYM extends Transform {
       const re = /([^ ]*) ([^ ]*) ([^ ]*) \[([^\]]*)\] "([^"]*)" ([^ ]*) ([^ ]*)/
       const matches = line.match(re)
       if (matches) {
-        try {
-          const log = {
-            remoteHost: matches[1],
-            remoteLogName: matches[2],
-            authUser: matches[3],
-            date: !Date.parse(matches[4])
-              ? 'indecipherable'
-              : new Date(matches[4]),
-            request: matches[5],
-            status: Number(matches[6]) || 'Invalid Status Code',
-            size: Number(matches[7]) || 0,
-          }
-          this.push(JSON.stringify(log))
-        } catch (Error) {}
+        const log = {
+          remoteHost: matches[1],
+          remoteLogName: matches[2],
+          authUser: matches[3],
+          date: !Date.parse(matches[4])
+            ? 'indecipherable'
+            : new Date(matches[4]),
+          request: matches[5],
+          status: Number(matches[6]) || 'Invalid Status Code',
+          size: Number(matches[7]) || 0,
+        }
+        this.push(JSON.stringify(log))
       } else {
         throw new IncorrectFormatError('ss')
       }
