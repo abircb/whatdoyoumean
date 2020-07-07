@@ -42,17 +42,18 @@ $ npm install -g wdym
 $ wdym web-log.txt --write
 ```
 
-writes to an output file ``output.json``. Remove the ``--write`` argument to write to ``stdout``.
-
+writes to an output file `output.json`. Remove the `--write` argument to write to `stdout`.
 
 ### Piped Input
+
 ```cli
 $ cat web-log.txt | wdym
 ```
 
-writes JSON output to ``stdout``.
+writes JSON output to `stdout`.
 
 ### Node.js Library
+
 ```js
 const wdym = require('wdym')
 const { pipeline } = require('stream') // API: https://nodejs.org/api/stream.html#stream_stream_pipeline_source_transforms_destination_callback
@@ -61,7 +62,7 @@ pipeline(source, new wdym(), destination, (err) => {
   if (err) {
     console.error('Pipeline failed.', err)
   } else {
-    console.log('Pipeline succeeded')
+    console.log('Pipeline succeeded.')
   }
 }
 ```
