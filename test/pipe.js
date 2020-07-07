@@ -1,7 +1,7 @@
 const should = require('should')
 const wdym = require('../')
 
-describe('CLF Log', () => {
+describe('One-line CLF log', () => {
   it('should convert to JSON without error', () => {
     let json = undefined
     const transform = new wdym()
@@ -10,17 +10,58 @@ describe('CLF Log', () => {
         json = JSON.parse(data)
       }
       json.should.be.eql({
-        remoteHost: '127.0.0.1',
-        remoteLogName: '-',
-        authUser: '-',
-        date: '2020-07-07T16:42:00.000Z',
-        request: 'GET /index.html HTTP/1.1',
-        status: 200,
-        size: 733,
+        log: [
+          {
+            remoteHost: '127.0.0.1',
+            remoteLogName: '-',
+            authUser: '-',
+            date: '2020-07-07T16:42:00.000Z',
+            request: 'GET /index.html HTTP/1.1',
+            status: 200,
+            size: 733,
+          },
+        ],
       })
     })
     transform.write(
       '127.0.0.1 - - [Wed, 07 July 2020 16:42:00 GMT] "GET /index.html HTTP/1.1" 200 733'
+    )
+  })
+})
+
+describe('Multiple-line CLF log', () => {
+  it('should convert to JSON without error', () => {
+    let json = undefined
+    const transform = new wdym()
+    transform.on('readable', function () {
+      while ((data = this.read())) {
+        json = JSON.parse(data)
+      }
+      json.should.be.eql({
+        log: [
+          {
+            remoteHost: '127.0.0.1',
+            remoteLogName: '-',
+            authUser: '-',
+            date: '2014-06-11T16:24:02.000Z',
+            request: 'GET / HTTP/1.1',
+            status: 200,
+            size: 10305,
+          },
+          {
+            remoteHost: '127.0.0.1',
+            remoteLogName: '-',
+            authUser: 'frank',
+            date: 'indecipherable',
+            request: 'GET /apache_pb.gif HTTP/1.0',
+            status: 200,
+            size: 2326,
+          },
+        ],
+      })
+    })
+    transform.write(
+      '127.0.0.1 - - [Wed, 11 Jun 2014 16:24:02 GMT] "GET / HTTP/1.1" 200 10305 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.76.4 (KHTML, like Gecko) Version/7.0.4 Safari/537.76.4"\n127.0.0.1 - frank [10/Oct/2000:13:55:36 -0700] "GET /apache_pb.gif HTTP/1.0" 200 2326'
     )
   })
 })
@@ -34,13 +75,17 @@ describe('CLF Log with non-numeric bytes', () => {
         json = JSON.parse(data)
       }
       json.should.be.eql({
-        remoteHost: '127.0.0.1',
-        remoteLogName: '-',
-        authUser: '-',
-        date: '2020-07-07T16:42:00.000Z',
-        request: 'GET /index.html HTTP/1.1',
-        status: 200,
-        size: 0,
+        log: [
+          {
+            remoteHost: '127.0.0.1',
+            remoteLogName: '-',
+            authUser: '-',
+            date: '2020-07-07T16:42:00.000Z',
+            request: 'GET /index.html HTTP/1.1',
+            status: 200,
+            size: 0,
+          },
+        ],
       })
     })
     transform.write(
@@ -58,13 +103,17 @@ describe('CLF Log containing a request with invalid status code', () => {
         json = JSON.parse(data)
       }
       json.should.be.eql({
-        remoteHost: '127.0.0.1',
-        remoteLogName: '-',
-        authUser: '-',
-        date: '2020-07-07T16:42:00.000Z',
-        request: 'GET /index.html HTTP/1.1',
-        status: 'Invalid Status Code',
-        size: 0,
+        log: [
+          {
+            remoteHost: '127.0.0.1',
+            remoteLogName: '-',
+            authUser: '-',
+            date: '2020-07-07T16:42:00.000Z',
+            request: 'GET /index.html HTTP/1.1',
+            status: 'Invalid Status Code',
+            size: 0,
+          },
+        ],
       })
     })
     transform.write(
@@ -82,13 +131,17 @@ describe('CLF Log with extra information', () => {
         json = JSON.parse(data)
       }
       json.should.be.eql({
-        remoteHost: '127.0.0.1',
-        remoteLogName: '-',
-        authUser: '-',
-        date: '2020-07-07T16:42:00.000Z',
-        request: 'GET /index.html HTTP/1.1',
-        status: 200,
-        size: 0,
+        log: [
+          {
+            remoteHost: '127.0.0.1',
+            remoteLogName: '-',
+            authUser: '-',
+            date: '2020-07-07T16:42:00.000Z',
+            request: 'GET /index.html HTTP/1.1',
+            status: 200,
+            size: 0,
+          },
+        ],
       })
     })
     transform.write(
@@ -106,13 +159,17 @@ describe('CLF Log containing an invalid Date', () => {
         json = JSON.parse(data)
       }
       json.should.be.eql({
-        remoteHost: '127.0.0.1',
-        remoteLogName: '-',
-        authUser: '-',
-        date: 'indecipherable',
-        request: 'GET /index.html HTTP/1.1',
-        status: 200,
-        size: 0,
+        log: [
+          {
+            remoteHost: '127.0.0.1',
+            remoteLogName: '-',
+            authUser: '-',
+            date: 'indecipherable',
+            request: 'GET /index.html HTTP/1.1',
+            status: 200,
+            size: 0,
+          },
+        ],
       })
     })
     transform.write(

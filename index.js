@@ -12,10 +12,12 @@ class WDYM extends Transform {
    */
   _transform(chunk, encoding, callback) {
     const input = chunk.toString()
-    input.split(/\n/).forEach((line) => {
+    const lines = input.split(/\n/)
+    let json = { log: [] }
+    lines.forEach((line) => {
       const matches = this.isCLF(line)
       if (matches) {
-        const log = {
+        const serverLog = {
           remoteHost: matches[1],
           remoteLogName: matches[2],
           authUser: matches[3],
@@ -26,7 +28,7 @@ class WDYM extends Transform {
           status: Number(matches[6]) || 'Invalid Status Code',
           size: Number(matches[7]) || 0,
         }
-        this.push(JSON.stringify(log))
+        json.log.push(serverLog)
       } else {
         console.error(
           chalk.red.bold('ERROR'),
@@ -35,6 +37,7 @@ class WDYM extends Transform {
         process.exit(0)
       }
     })
+    this.push(JSON.stringify(json))
     callback()
   }
 
