@@ -1,6 +1,6 @@
 {
   "name": "wdym",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Convert Common Log Format to more useful (and human-readable) JSON.",
   "main": "index.js",
   "keywords": [
