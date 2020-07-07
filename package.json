@@ -27,6 +27,6 @@
     "log-symbols": "^4.0.0"
   },
   "bin": {
-    "wdym": "bin/cli.js"
+    "wdym": "bin/wdym"
   }
 }

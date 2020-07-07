@@ -1,5 +1,3 @@
-#!/usr/bin/env node
-
 const arg = require('arg')
 const chalk = require('chalk')
 const logSymbols = require('log-symbols')
@@ -9,8 +7,6 @@ const wdym = require('../')
 const release = require('../package.json')
 const writer = new wdym()
 const { pipeline } = require('stream')
-
-decipherMeaning(process.argv.slice(2))
 
 function decipherMeaning(rawArgs) {
   const args = arg(
@@ -81,3 +77,5 @@ function fatalErrorMessage() {
     chalk.blue.underline('https://github.com/abircb/wdym')
   )
 }
+
+module.exports = decipherMeaning
