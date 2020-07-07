@@ -6,19 +6,17 @@ const logSymbols = require('log-symbols')
 const fs = require('fs')
 
 const wdym = require('../')
+const release = require('../package.json')
 const writer = new wdym()
-const { pipeline, finished } = require('stream')
+const { pipeline } = require('stream')
 
-parseArgs(process.argv.slice(2))
+decipherMeaning(process.argv.slice(2))
 
-function parseArgs(rawArgs) {
+function decipherMeaning(rawArgs) {
   const args = arg(
     {
       '--write': Boolean,
-      '-h': Boolean,
-      '-v': Boolean,
-      '--help': '-h',
-      '--version': '-v',
+      '--version': Boolean,
     },
     {
       argv: rawArgs,
@@ -26,42 +24,41 @@ function parseArgs(rawArgs) {
     }
   )
 
-  if (args._.length > 0) {
-    transformFile(args)
+  let writeStream = undefined
+
+  try {
+    writeStream = args['--write']
+      ? fs.createWriteStream('./output.json')
+      : process.stdout
+  } catch (err) {
+    fatalErrorMessage()
+  }
+
+  if (args['--version']) {
+    console.log(logSymbols.info, release.version)
+  } else if (args._.length > 0) {
+    transformFile(args, writeStream)
   } else {
-    transformStream(args)
+    write(process.stdin, writeStream)
   }
 }
 
-function transformFile(args) {
+function transformFile(args, writeStream) {
   const path = args['_'][0]
-  const readStream = fs.createReadStream(path)
-  const writeStream = args['--write']
-    ? fs.createWriteStream('./output.json')
-    : process.stdout
-  write(readStream, writeStream)
-}
-
-function transformStream(args) {
-  const writeStream = args['--write']
-    ? fs.createWriteStream('./output.json')
-    : process.stdout
-  write(process.stdin, writeStream)
+  try {
+    const readStream = fs.createReadStream(path)
+    write(readStream, writeStream)
+  } catch (err) {
+    fatalErrorMessage()
+    process.exit(0)
+  }
 }
 
 function write(source, destination) {
   pipeline(source, writer, destination, (err, val) => {
     if (err) {
-      console.error(
-        logSymbols.error,
-        chalk.bold.red('ERROR'),
-        'An error occurred while processing the log'
-      )
-      console.error(
-        logSymbols.info,
-        'If this persists, raise an issue on ',
-        chalk.blue.underline('https://github.com/abircb/wdym')
-      )
+      fatalErrorMessage()
+      process.exit(0)
     } else {
       console.log(
         logSymbols.success,
@@ -70,4 +67,17 @@ function write(source, destination) {
       )
     }
   })
+}
+
+function fatalErrorMessage() {
+  console.error(
+    logSymbols.error,
+    chalk.bold.red('ERROR'),
+    'An error occurred while processing the log'
+  )
+  console.error(
+    logSymbols.info,
+    'If this persists, raise an issue on ',
+    chalk.blue.underline('https://github.com/abircb/wdym')
+  )
 }
