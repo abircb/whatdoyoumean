@@ -32,6 +32,7 @@ class WDYM extends Transform {
           chalk.red.bold('ERROR'),
           'The log is not in Common Log Format (CLF)'
         )
+        process.exit(0)
       }
     })
     callback()
