@@ -9,18 +9,27 @@ const writer = new wdym()
 const { pipeline } = require('stream')
 
 function decipherMeaning(rawArgs) {
-  const args = arg(
-    {
-      '--write': Boolean,
-      '--version': Boolean,
-    },
-    {
-      argv: rawArgs,
-      permissive: false,
-    }
-  )
-
-  let writeStream = undefined
+  let args,
+    writeStream = undefined
+  try {
+    args = arg(
+      {
+        '--write': Boolean,
+        '--version': Boolean,
+      },
+      {
+        argv: rawArgs,
+        permissive: false,
+      }
+    )
+  } catch (err) {
+    console.error(
+      logSymbols.error,
+      chalk.bold.red('ERROR'),
+      'Unknown or unexpected option(s)'
+    )
+    process.exit()
+  }
 
   try {
     writeStream = args['--write']
@@ -28,6 +37,7 @@ function decipherMeaning(rawArgs) {
       : process.stdout
   } catch (err) {
     fatalErrorMessage()
+    process.exit()
   }
 
   if (args['--version']) {

@@ -1,9 +1,9 @@
-![npm](https://img.shields.io/npm/v/wdym)
+[![npm](https://img.shields.io/npm/v/wdym)](https://www.npmjs.com/package/wdym)
 [![Build Status](https://travis-ci.com/abircb/wdym.svg?token=kBvypWapbvpPYcC9Jrdw&branch=master)](https://travis-ci.com/abircb/wdym)
 
 # wdym
 
-Convert [Common Log Format](https://httpd.apache.org/docs/1.3/logs.html#common) to more useful (and human-readable) JSON. Especially handy when analysing server log files for activity and performance.
+Convert [Common Log Format](https://httpd.apache.org/docs/1.3/logs.html#common) into more useful (and human-readable) JSON. Especially handy when analysing server log files for activity and performance.
 
 For example, standard log input such as
 

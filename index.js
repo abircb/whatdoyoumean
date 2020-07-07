@@ -21,9 +21,7 @@ class WDYM extends Transform {
           remoteHost: matches[1],
           remoteLogName: matches[2],
           authUser: matches[3],
-          date: !Date.parse(matches[4])
-            ? 'indecipherable'
-            : new Date(matches[4]),
+          date: !Date.parse(matches[4]) ? 'unreadable' : new Date(matches[4]),
           request: matches[5],
           status: Number(matches[6]) || 'Invalid Status Code',
           size: Number(matches[7]) || 0,
