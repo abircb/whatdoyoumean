@@ -1,6 +1,5 @@
 const should = require('should')
 const wdym = require('../')
-const IncorrectFormatError = require('../helpers/IncorrectFormatError')
 
 describe('CLF Log', () => {
   it('should convert to JSON without error', () => {
@@ -50,7 +49,7 @@ describe('CLF Log with non-numeric bytes', () => {
   })
 })
 
-describe('CLF Log containing request with invalid status code', () => {
+describe('CLF Log containing a request with invalid status code', () => {
   it('should convert to JSON without error, but inform about the incorrect status code', () => {
     let json = undefined
     const transform = new wdym()
@@ -98,18 +97,7 @@ describe('CLF Log with extra information', () => {
   })
 })
 
-describe('not CLF Log', () => {
-  it('should throw an error', () => {
-    should(() => {
-      const transform = new wdym()
-      transform.write(
-        '2010-05-02 15:42:15 - 40.89.255.10  34.14.255.10 80 GET /default.htm 200 - HTTP/1.0 Mozilla/4.0  (compatible: MSIE+5.5+Windows+2000+Server)'
-      )
-    }).throw(IncorrectFormatError)
-  })
-})
-
-describe('invalid Date', () => {
+describe('CLF Log containing an invalid Date', () => {
   it('should not parse the date, but not throw an error', () => {
     let json = undefined
     const transform = new wdym()
@@ -130,5 +118,16 @@ describe('invalid Date', () => {
     transform.write(
       '127.0.0.1 - - [Here is an invalid date] "GET /index.html HTTP/1.1" 200 "http://localhost:8000" "userAgent"'
     )
+  })
+})
+
+describe('not CLF Log', () => {
+  it('should not match CLF pattern', () => {
+    const transform = new wdym()
+    should(
+      transform.isCLF(
+        '2010-05-02 15:42:15 - 40.89.255.10  34.14.255.10 80 GET /default.htm 200 - HTTP/1.0 Mozilla/4.0  (compatible: MSIE+5.5+Windows+2000+Server)'
+      )
+    ).be.exactly(null)
   })
 })

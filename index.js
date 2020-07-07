@@ -1,7 +1,7 @@
 'use strict'
 
 const Transform = require('stream').Transform
-const IncorrectFormatError = require('./helpers/IncorrectFormatError')
+const chalk = require('chalk')
 
 class WDYM extends Transform {
   /**
@@ -13,8 +13,7 @@ class WDYM extends Transform {
   _transform(chunk, encoding, callback) {
     const input = chunk.toString()
     input.split(/\n/).forEach((line) => {
-      const re = /([^ ]*) ([^ ]*) ([^ ]*) \[([^\]]*)\] "([^"]*)" ([^ ]*) ([^ ]*)/
-      const matches = line.match(re)
+      const matches = this.isCLF(line)
       if (matches) {
         const log = {
           remoteHost: matches[1],
@@ -29,10 +28,19 @@ class WDYM extends Transform {
         }
         this.push(JSON.stringify(log))
       } else {
-        throw new IncorrectFormatError('ss')
+        console.error(
+          chalk.red.bold('ERROR'),
+          'The log is not in Common Log Format (CLF)'
+        )
       }
     })
     callback()
+  }
+
+  isCLF(line) {
+    return line.match(
+      /([^ ]*) ([^ ]*) ([^ ]*) \[([^\]]*)\] "([^"]*)" ([^ ]*) ([^ ]*)/
+    )
   }
 }
 

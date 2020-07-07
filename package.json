@@ -20,5 +20,12 @@
     "mocha": "^8.0.1",
     "prettier": "^2.0.5",
     "should": "^13.2.3"
+  },
+  "dependencies": {
+    "chalk": "^4.1.0",
+    "log-symbols": "^4.0.0"
+  },
+  "bin": {
+    "wdym": "bin/cli.js"
   }
 }
