@@ -67,7 +67,7 @@ function transformFile(args, writeStream) {
     write(readStream, writeStream)
   } catch (err) {
     fatalErrorMessage()
-    process.exit(0)
+    process.exit()
   }
 }
 
@@ -80,7 +80,7 @@ function write(source, destination) {
   pipeline(source, writer, destination, (err) => {
     if (err) {
       fatalErrorMessage()
-      process.exit(0)
+      process.exit()
     } else {
       console.log(
         logSymbols.success,

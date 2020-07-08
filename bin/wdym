@@ -1,4 +1,4 @@
 #!/usr/bin/env node
 
-const decipher = require('./cli.js')
-decipher(process.argv.slice(2))
+const wdym = require('./cli.js')
+wdym(process.argv.slice(2))

@@ -3,6 +3,8 @@
 
 # wdym
 
+[API Documentation](https://github.com/abircb/wdym/wiki/API-Documentation)
+
 Convert [Common Log Format](https://httpd.apache.org/docs/1.3/logs.html#common) into more useful (and human-readable) JSON. Especially handy when analysing server log files for activity and performance.
 
 For example, standard log input such as
@@ -67,3 +69,5 @@ pipeline(source, new wdym(), destination, (err) => {
   }
 }
 ```
+
+**See also**: [API Documentation](https://github.com/abircb/wdym/wiki/API-Documentation)
