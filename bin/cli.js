@@ -20,6 +20,7 @@ function decipherMeaning(rawArgs) {
       {
         '--write': Boolean,
         '--version': Boolean,
+        '--csv': Boolean,
       },
       {
         argv: rawArgs,
@@ -58,7 +59,11 @@ function transformFile(args, writeStream) {
   const path = args['_'][0]
   try {
     const readStream = fs.createReadStream(path)
-    write(readStream, writeStream)
+    if (args['--csv']) {
+      writeCSV(readStream, writeStream)
+    } else {
+      write(readStream, writeStream)
+    }
   } catch (err) {
     messages.fatalErrorMessage()
     process.exit()
