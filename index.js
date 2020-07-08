@@ -1,12 +1,17 @@
 'use strict'
 
-const Transform = require('stream').Transform
+const stream = require('stream')
 const chalk = require('chalk')
 
-class WDYM extends Transform {
+/**
+ * What do you mean?
+ *
+ * A custom (Duplex) Transform stream.
+ */
+class WDYM extends stream.Transform {
   /**
-   * transforms input stream in Common Log Format into useful JSON
-   * @param {Object} chunk - the input stream of data
+   * Transforms input stream in Common Log Format into useful JSON.
+   * @param {stream.Readable} chunk - the input stream of data
    * @param {String} encoding - character encoding of the chunk
    * @param {Function} callback - called when processing is complete for the supplied chunk
    */
@@ -39,9 +44,15 @@ class WDYM extends Transform {
     callback()
   }
 
+  /**
+   * Matches the line to the standardised (ASCII) CLF Log format.
+   * https://www.iri.com/blog/migration/data-migration/clf-elf-web-log-formats/
+   * @param {String} line - a line of the input stream
+   * @returns {Array}
+   */
   isCLF(line) {
     return line.match(
-      /([^ ]*) ([^ ]*) ([^ ]*) \[([^\]]*)\] "([^"]*)" ([^ ]*) ([^ ]*)/
+      /^(\S+) (\S+) (\S+) \[([\w:/]+\s[+\-]\d{4})\] "(\S+)\s?(\S+)?\s?(\S+)?" (\d{3}|-) (\d+|-)\s?"?([^"]*)"?\s?"?([^"]*)?"?$/m
     )
   }
 }
