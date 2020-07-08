@@ -1,10 +1,10 @@
 const should = require('should')
-const wdym = require('../')
+const wdymJSON = require('../').json
 
 describe('One-line CLF log', () => {
   it('should convert to JSON without error', () => {
     let json = undefined
-    const transform = new wdym()
+    const transform = new wdymJSON()
     transform.on('readable', function () {
       while ((data = this.read())) {
         json = JSON.parse(data)
@@ -32,7 +32,7 @@ describe('One-line CLF log', () => {
 describe('Multiple-line CLF log', () => {
   it('should convert to JSON without error', () => {
     let json = undefined
-    const transform = new wdym()
+    const transform = new wdymJSON()
     transform.on('readable', function () {
       while ((data = this.read())) {
         json = JSON.parse(data)
@@ -69,7 +69,7 @@ describe('Multiple-line CLF log', () => {
 describe('CLF Log in UTC date format', () => {
   it('should convert to JSON without error and change the size of the object to 0', () => {
     let json = undefined
-    const transform = new wdym()
+    const transform = new wdymJSON()
     transform.on('readable', function () {
       while ((data = this.read())) {
         json = JSON.parse(data)
@@ -97,7 +97,7 @@ describe('CLF Log in UTC date format', () => {
 describe('CLF Log containing an invalid Date', () => {
   it('should not parse the date, but not throw an error', () => {
     let json = undefined
-    const transform = new wdym()
+    const transform = new wdymJSON()
     transform.on('readable', function () {
       while ((data = this.read())) {
         json = JSON.parse(data)

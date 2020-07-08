@@ -1,9 +1,9 @@
 'use strict'
 
-const WDYM = require('../index')
+const WDYM = require('./wdym')
 const { parse } = require('date-fns')
-const IncorrectFormatError = require('./custom/IncorrectFormatError')
-const messages = require('./custom/messages')
+const IncorrectFormatError = require('../custom/IncorrectFormatError')
+const messages = require('../custom/messages')
 
 class WDYM_JSON extends WDYM {
   /**

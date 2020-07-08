@@ -4,8 +4,8 @@ const arg = require('arg')
 const fs = require('fs')
 const { pipeline } = require('stream')
 
-const wdym = require('../')
-const writer = new wdym()
+const wdymJSON = require('../').json
+const wdymCSV = require('../').csv
 const messages = require('../custom/messages')
 
 /**
@@ -20,7 +20,6 @@ function decipherMeaning(rawArgs) {
       {
         '--write': Boolean,
         '--version': Boolean,
-        '--csv': Boolean,
       },
       {
         argv: rawArgs,
@@ -59,11 +58,7 @@ function transformFile(args, writeStream) {
   const path = args['_'][0]
   try {
     const readStream = fs.createReadStream(path)
-    if (args['--csv']) {
-      writeCSV(readStream, writeStream)
-    } else {
-      write(readStream, writeStream)
-    }
+    write(readStream, writeStream)
   } catch (err) {
     messages.fatalErrorMessage()
     process.exit()
@@ -76,7 +71,7 @@ function transformFile(args, writeStream) {
  * @param {stream.Writable} destination - the destination for writing data
  */
 function write(source, destination) {
-  pipeline(source, writer, destination, (err) => {
+  pipeline(source, new wdymJSON(), destination, (err) => {
     if (err) {
       messages.fatalErrorMessage()
       process.exit()

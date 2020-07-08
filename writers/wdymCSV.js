@@ -1,14 +1,16 @@
 'use strict'
 
-const WDYM = require('../index')
+const WDYM = require('./wdym')
 const createCSVWriter = require('csv-writer').createObjectCsvWriter
 const createCSVStringifier = require('csv-writer').createObjectCsvStringifier
 
 class WDYM_CSV extends WDYM {
-  _transform(chunk, encoding, callback) {/* do nothing */}
+  _transform(chunk, encoding, callback) {
+    /* do nothing */
+  }
 
   toCSV(serverLog) {
-    const schema = this._csvSchema(serverLog)
+    const schema = this.getCSVSchema(serverLog)
     const csvStringifier = createCSVStringifier({ header: schema })
     return csvStringifier
       .getHeaderString()
@@ -16,11 +18,11 @@ class WDYM_CSV extends WDYM {
   }
 
   get _csvWriter() {
-    const schema = this._csvSchema(serverLog)
+    const schema = this.getCSVSchema(serverLog)
     return createCSVWriter({ path: './output.csv', header: schema })
   }
 
-  get _csvSchema(serverLog) {
+  getCSVSchema(serverLog) {
     const keys = Object.keys(serverLog)
     const titles = [
       'REMOTE HOST',
