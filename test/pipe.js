@@ -1,5 +1,5 @@
 const should = require('should')
-const wdymJSON = require('../').json
+const wdymJSON = require('../writers/wdymJSON')
 
 describe('One-line CLF log', () => {
   it('should convert to JSON without error', () => {

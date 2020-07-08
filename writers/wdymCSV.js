@@ -3,7 +3,6 @@
 const WDYM = require('./wdym')
 const wdymJSON = require('./wdymJSON')
 const writer = new wdymJSON()
-const createCSVWriter = require('csv-writer').createObjectCsvWriter
 const createCSVStringifier = require('csv-writer').createObjectCsvStringifier
 const messages = require('../custom/messages')
 
@@ -19,6 +18,7 @@ class WDYM_CSV extends WDYM {
       messages.incorrectFormatError()
       process.exit()
     }
+    callback()
   }
 
   toCSV(serverLog) {
@@ -27,11 +27,6 @@ class WDYM_CSV extends WDYM {
     return csvStringifier
       .getHeaderString()
       .concat(csvStringifier.stringifyRecords(serverLog))
-  }
-
-  get _csvWriter() {
-    const schema = this._getCSVSchema(serverLog)
-    return createCSVWriter({ path: './output.csv', header: schema })
   }
 
   _getCSVSchema(serverLog) {

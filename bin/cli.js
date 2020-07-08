@@ -7,6 +7,7 @@ const { pipeline } = require('stream')
 const wdymJSON = require('../').json
 const wdymCSV = require('../').csv
 const messages = require('../custom/messages')
+const WDYM_CSV = require('../writers/wdymCSV')
 
 /**
  * Parses command line arguments and deciphers meaning of the command.
@@ -79,7 +80,7 @@ function write(source, destination, options) {
   const writer = options.default ? wdymJSON : wdymCSV
   pipeline(source, writer, destination, (err) => {
     if (err) {
-      messages.fatalErrorMessage()
+      messages.fatalError()
       process.exit()
     } else {
       messages.successfulWrite()
