@@ -10,10 +10,6 @@ const wdymJSON = require('./writers/wdymJSON')
  */
 
 module.exports = {
-  json: function getJSON() {
-    return new wdymJSON()
-  },
-  csv: function getCSV() {
-    return new wdymCSV()
-  },
+  json: new wdymJSON(),
+  csv: new wdymCSV(),
 }

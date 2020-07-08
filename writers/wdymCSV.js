@@ -1,29 +1,41 @@
 'use strict'
 
 const WDYM = require('./wdym')
+const wdymJSON = require('./wdymJSON')
+const writer = new wdymJSON()
 const createCSVWriter = require('csv-writer').createObjectCsvWriter
 const createCSVStringifier = require('csv-writer').createObjectCsvStringifier
+const messages = require('../custom/messages')
 
 class WDYM_CSV extends WDYM {
   _transform(chunk, encoding, callback) {
-    /* do nothing */
+    const input = chunk.toString()
+    const lines = input.split(/\n/)
+    try {
+      const json = writer.toJSON(lines)
+      const csv = this.toCSV(json.log)
+      this.push(csv)
+    } catch (err) {
+      messages.incorrectFormatError()
+      process.exit()
+    }
   }
 
   toCSV(serverLog) {
-    const schema = this.getCSVSchema(serverLog)
+    const schema = this._getCSVSchema(serverLog)
     const csvStringifier = createCSVStringifier({ header: schema })
     return csvStringifier
       .getHeaderString()
-      .concat(csvStringifier.stringifyRecords([serverLog]))
+      .concat(csvStringifier.stringifyRecords(serverLog))
   }
 
   get _csvWriter() {
-    const schema = this.getCSVSchema(serverLog)
+    const schema = this._getCSVSchema(serverLog)
     return createCSVWriter({ path: './output.csv', header: schema })
   }
 
-  getCSVSchema(serverLog) {
-    const keys = Object.keys(serverLog)
+  _getCSVSchema(serverLog) {
+    const keys = Object.keys(serverLog[0])
     const titles = [
       'REMOTE HOST',
       'REMOTE LOG NAME',

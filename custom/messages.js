@@ -10,7 +10,7 @@ function successfulWrite() {
   console.log(
     logSymbols.success,
     chalk.green.bold('SUCCESSFUL'),
-    'Written to output.json'
+    'Written to output file'
   )
 }
 
