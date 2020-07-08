@@ -1,8 +1,11 @@
 'use strict'
 
 const stream = require('stream')
-const chalk = require('chalk')
 const { parse } = require('date-fns')
+const createCsvWriter = require('csv-writer').createObjectCsvStringifier
+
+const IncorrectFormatError = require('./custom/IncorrectFormatError')
+const messages = require('./custom/messages')
 
 /**
  * What do you mean?
@@ -19,8 +22,19 @@ class WDYM extends stream.Transform {
   _transform(chunk, encoding, callback) {
     const input = chunk.toString()
     const lines = input.split(/\n/)
+    try {
+      const json = this.toJSON(lines)
+      this.push(JSON.stringify(json))
+    } catch (err) {
+      messages.incorrectFormatError()
+      process.exit()
+    }
+    callback()
+  }
+
+  toJSON(clf) {
     let json = { log: [] }
-    lines.forEach((line) => {
+    clf.forEach((line) => {
       const matches = this.isCLF(line)
       if (matches) {
         const serverLog = {
@@ -37,15 +51,10 @@ class WDYM extends stream.Transform {
         }
         json.log.push(serverLog)
       } else {
-        console.error(
-          chalk.red.bold('ERROR'),
-          'The log is not in Common Log Format (CLF)'
-        )
-        process.exit(0)
+        throw new IncorrectFormatError()
       }
     })
-    this.push(JSON.stringify(json))
-    callback()
+    return json
   }
 
   /**

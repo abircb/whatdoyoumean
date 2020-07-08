@@ -1,14 +1,12 @@
 'use strict'
 
 const arg = require('arg')
-const chalk = require('chalk')
-const logSymbols = require('log-symbols')
 const fs = require('fs')
+const { pipeline } = require('stream')
 
 const wdym = require('../')
-const release = require('../package.json')
 const writer = new wdym()
-const { pipeline } = require('stream')
+const messages = require('../custom/messages')
 
 /**
  * Parses command line arguments and deciphers meaning of the command.
@@ -29,11 +27,7 @@ function decipherMeaning(rawArgs) {
       }
     )
   } catch (err) {
-    console.error(
-      logSymbols.error,
-      chalk.bold.red('ERROR'),
-      'Unknown or unexpected option(s)'
-    )
+    messages.argsError()
     process.exit()
   }
 
@@ -42,12 +36,12 @@ function decipherMeaning(rawArgs) {
       ? fs.createWriteStream('./output.json')
       : process.stdout
   } catch (err) {
-    fatalErrorMessage()
+    messages.fatalErrorMessage()
     process.exit()
   }
 
   if (args['--version']) {
-    console.log(logSymbols.info, release.version)
+    messages.version()
   } else if (args._.length > 0) {
     transformFile(args, writeStream)
   } else {
@@ -66,7 +60,7 @@ function transformFile(args, writeStream) {
     const readStream = fs.createReadStream(path)
     write(readStream, writeStream)
   } catch (err) {
-    fatalErrorMessage()
+    messages.fatalErrorMessage()
     process.exit()
   }
 }
@@ -79,32 +73,12 @@ function transformFile(args, writeStream) {
 function write(source, destination) {
   pipeline(source, writer, destination, (err) => {
     if (err) {
-      fatalErrorMessage()
+      messages.fatalErrorMessage()
       process.exit()
     } else {
-      console.log(
-        logSymbols.success,
-        chalk.green.bold('SUCCESSFUL'),
-        'Written to output.json'
-      )
+      messages.successfulWrite()
     }
   })
-}
-
-/**
- * The standard fatal error message for wdym.
- */
-function fatalErrorMessage() {
-  console.error(
-    logSymbols.error,
-    chalk.bold.red('ERROR'),
-    'An error occurred while processing the log'
-  )
-  console.error(
-    logSymbols.info,
-    'If this persists, raise an issue on ',
-    chalk.blue.underline('https://github.com/abircb/wdym')
-  )
 }
 
 module.exports = decipherMeaning
