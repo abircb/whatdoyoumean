@@ -2,6 +2,7 @@
 
 const stream = require('stream')
 const chalk = require('chalk')
+const { parse } = require('date-fns')
 
 /**
  * What do you mean?
@@ -26,7 +27,10 @@ class WDYM extends stream.Transform {
           remoteHost: matches[1],
           remoteLogName: matches[2],
           authUser: matches[3],
-          date: !Date.parse(matches[4]) ? 'unreadable' : new Date(matches[4]),
+          date:
+            Date.parse(matches[4]) || this.parseDate(matches[4])
+              ? this.parseDate(matches[4])
+              : 'unreadable',
           request: matches[5],
           status: Number(matches[6]) || 'Invalid Status Code',
           size: Number(matches[7]) || 0,
@@ -52,8 +56,24 @@ class WDYM extends stream.Transform {
    */
   isCLF(line) {
     return line.match(
-      /^(\S+) (\S+) (\S+) \[([\w:/]+\s[+\-]\d{4})\] "(\S+)\s?(\S+)?\s?(\S+)?" (\d{3}|-) (\d+|-)\s?"?([^"]*)"?\s?"?([^"]*)?"?$/m
+      /^(\S+) (\S+) (\S+) \[([^\]]*)\] "([^"]*)" (\d{3}|-) (\d+|-)\s?"?([^"]*)"?\s?"?([^"]*)?"?$/m
     )
+  }
+
+  /**
+   * Parses CLF Standard date ([day/month/year:hour:minute:second zone])
+   * @param {String} date
+   */
+  parseDate(date) {
+    if (Date.parse(date)) return new Date(date)
+
+    const strftime = /([\w:/]+\s[+\-]\d{4})/
+    if (date.match(strftime)) {
+      const parsed = parse(date, 'd/MMM/yyyy:kk:mm:ss XX', new Date())
+      if (!isNaN(parsed)) return parsed
+    }
+
+    return null
   }
 }
 
