@@ -106,3 +106,4 @@ dist
 # MISC
 package-lock.json
 content/
+output.json

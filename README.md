@@ -8,7 +8,7 @@ Convert [Common Log Format](https://httpd.apache.org/docs/1.3/logs.html#common) 
 For example, standard log input such as
 
 ```txt
-125.0.0.1 identifier tara [Tue, 7 July 2020 16:24:02 GMT] "GET /examp_alt.png HTTP/1.0" 200 10801
+127.0.0.1 tara ss [07/Jul/2020:16:44:36 +0000] "GET /wdym.npm HTTP/1.1" 200 2326
 ```
 
 would be converted to
@@ -17,13 +17,13 @@ would be converted to
 {
   "log": [
     {
-      "remoteHost": "125.0.0.1",
-      "remoteLogName": "identifier",
-      "authUser": "tara",
-      "date": "2020-07-07T16:24:02.000Z",
-      "request": "GET /examp_alt.png HTTP/1.0",
+      "remoteHost": "127.0.0.1",
+      "remoteLogName": "tara",
+      "authUser": "ss",
+      "date": "2020-07-07T16:44:36.000Z",
+      "request": "GET /wdym.npm HTTP/1.1",
       "status": 200,
-      "size": 10801
+      "size": 2326
     }
   ]
 }
@@ -40,7 +40,7 @@ $ npm install -g wdym
 ### Command Line Executable
 
 ```cli
-$ wdym web-log.txt --write
+$ wdym log.txt --write
 ```
 
 writes to an output file `output.json`. Remove the `--write` argument to write to `stdout`.
@@ -48,7 +48,7 @@ writes to an output file `output.json`. Remove the `--write` argument to write t
 ### Piped Input
 
 ```cli
-$ cat web-log.txt | wdym
+$ cat log.txt | wdym
 ```
 
 writes JSON output to `stdout`.
