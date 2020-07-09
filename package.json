@@ -5,8 +5,8 @@
   "main": "index.js",
   "keywords": [
     "CLF",
-    "CLF to JSON",
     "CLF to CSV",
+    "CLF to JSON",
     "server log",
     "server log analysis NPM"
   ],
