@@ -1,8 +1,6 @@
 'use strict'
 
 const stream = require('stream')
-const IncorrectFormatError = require('../custom/IncorrectFormatError')
-const ValidationError = require('../custom/ValidationError')
 
 /**
  * What do you mean?
@@ -12,7 +10,8 @@ const ValidationError = require('../custom/ValidationError')
 class WDYM extends stream.Transform {
   /**
    * Matches the line to the standardised (ASCII) CLF Log format.
-   * https://www.iri.com/blog/migration/data-migration/clf-elf-web-log-formats/
+   * If in strict mode, performs validation on the log's components.
+   * https://httpd.apache.org/docs/1.3/logs.html
    * @param {String} line - a line of the input stream
    * @returns {Array}
    */
@@ -25,12 +24,17 @@ class WDYM extends stream.Transform {
     )
   }
 
+  /**
+   * Matches the line to the standardised (ASCII) CLF Log format and also validates its components (such as remote host and HTTP status code)
+   * @param {String} line - a line of the input stream
+   * @returns {Array}
+   */
   _strictCLF(line) {
     const partialMatch = this.isCLF(line)
     if (partialMatch) {
       if (
-        !this.validateIP(partialMatch[1]) ||
-        !this.validateHTTPStatusCode(partialMatch[6])
+        !this._validateIP(partialMatch[1]) ||
+        !this._validateHTTPStatusCode(partialMatch[6])
       ) {
         return null
       }
@@ -40,13 +44,13 @@ class WDYM extends stream.Transform {
     }
   }
 
-  validateIP(IP) {
+  _validateIP(IP) {
     return IP.match(
       /^(?=.*[^\.]$)((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.?){4}$/m
     )
   }
 
-  validateHTTPStatusCode(code) {
+  _validateHTTPStatusCode(code) {
     return code.match(/[1-5]\d\d/)
   }
 }

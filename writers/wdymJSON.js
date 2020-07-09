@@ -27,20 +27,20 @@ class WDYM_JSON extends WDYM {
   }
 
   /**
-   * Parses the CLF logs and converts them to JSON.
+   * Parses the CLF logs and converts them to a single JavaScript Object.
    * @param {Array} clf - the CLF Logs
-   * @throws {IncorrectFormatError}
+   * @throws {IncorrectFormatError} - when one (or more) of the logs is not in CLF
+   * @throws {ValidationError} - when one (or more) of the logs' components fail to validate
    * @returns {Object}
    */
   toJSON(clf) {
     let json = { log: [] }
-
     clf.forEach((line) => {
       const matches = super.isCLF(line)
       if (matches) {
         if (
-          !super.validateIP(matches[1]) ||
-          !super.validateHTTPStatusCode(matches[6])
+          !super._validateIP(matches[1]) ||
+          !super._validateHTTPStatusCode(matches[6])
         ) {
           throw new ValidationError(
             'One or more of the logs failed to validate'
@@ -67,7 +67,6 @@ class WDYM_JSON extends WDYM {
         )
       }
     })
-
     return json
   }
 

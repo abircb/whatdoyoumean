@@ -131,7 +131,7 @@ describe('CLF Log with an invalid IP address', () => {
     const match = transform.isCLF(
       'a - g [July 7, 2020 16:91 GMT] "GET /ss.html HTTP/1.1" 200 2326'
     )
-    should(transform.validateIP(match[1])).be.exactly(null)
+    should(transform._validateIP(match[1])).be.exactly(null)
   })
 })
 
@@ -142,7 +142,7 @@ describe('CLF Log with an invalid HTTP status code', () => {
     const match = transform.isCLF(
       '127.0.0.1 - g [Wed, July 7, 2020 16:91 GMT] "GET /ss.html HTTP/1.1" 812 2152'
     )
-    should(transform.validateHTTPStatusCode(match[6])).be.exactly(null)
+    should(transform._validateHTTPStatusCode(match[6])).be.exactly(null)
   })
 })
 
