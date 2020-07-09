@@ -20,8 +20,9 @@ function decipherMeaning(rawArgs) {
     args = arg(
       {
         '--write': Boolean,
-        '--version': Boolean,
         '--csv': Boolean,
+        '--version': Boolean,
+        '-v': '--version'
       },
       {
         argv: rawArgs,

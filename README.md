@@ -5,7 +5,9 @@
 
 [API Documentation](https://github.com/abircb/wdym/wiki/API-Documentation)
 
-Convert [Common Log Format](https://httpd.apache.org/docs/1.3/logs.html#common) into more useful (and human-readable) JSON. Especially handy when analysing server log files for activity and performance.
+Convert [Common Log Format](https://httpd.apache.org/docs/1.3/logs.html#common) into more useful (and human-readable) JSON and/or CSV. Especially handy when analysing server log files for activity and performance. 
+
+Can be used both as a command line executable and as a Node.js library.
 
 For example, standard log input such as
 
@@ -31,6 +33,10 @@ would be converted to
 }
 ```
 
+or
+
+![CSV](github-assets/csv.png)
+
 ## Installation
 
 ```cli
@@ -42,26 +48,33 @@ $ npm install -g wdym
 ### Command Line Executable
 
 ```cli
-$ wdym log.txt --write
+$ wdym log.txt --csv --write
 ```
+converts the logs into CSV and writes to an output file `output.csv`. 
 
-writes to an output file `output.json`. Remove the `--write` argument to write to `stdout`.
+Defaults to JSON, remove the `--csv` argument to write to a JSON file. Remove the `--write` argument to write to `stdout`. 
+
+__Example__:
+```cli
+$ wdym log.txt
+```
+converts the logs into JSON and prints to `stdout`.
 
 ### Piped Input
 
 ```cli
-$ cat log.txt | wdym
+$ cat log.txt | wdym --write
 ```
 
-writes JSON output to `stdout`.
+writes JSON output to `output.json`.
 
 ### Node.js Library
 
 ```js
-const wdym = require('wdym')
+const wdymCSV = require('wdym').csv
 const { pipeline } = require('stream') // API: https://nodejs.org/api/stream.html#stream_stream_pipeline_source_transforms_destination_callback
 
-pipeline(source, new wdym(), destination, (err) => {
+pipeline(source, wdymCSV, destination, (err) => {
   if (err) {
     console.error('Pipeline failed.', err)
   } else {
