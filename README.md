@@ -74,7 +74,7 @@ $ wdym log.txt --csv --write
 
 converts the logs into CSV and writes to an output file `output.csv`.
 
-Defaults to JSON, remove the `--csv` argument to write to a JSON file. Remove the `--write` argument to write to `stdout`.
+Defaults to JSON, remove the `--csv` argument to write to a JSON file. Remove the `--write` argument to write to `stdout` (standard out).
 
 **Example**:
 
@@ -82,7 +82,7 @@ Defaults to JSON, remove the `--csv` argument to write to a JSON file. Remove th
 $ wdym log.txt
 ```
 
-converts the logs into JSON and prints to `stdout`.
+converts the logs into JSON and prints to to the shell (via `stdout`).
 
 ### Piped Input
 

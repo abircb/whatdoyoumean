@@ -1,7 +1,7 @@
 {
   "name": "wdym",
-  "version": "1.0.6",
-  "description": "Convert Common Log Format (CLF) into more useful (and human-readable) JSON/CSV.",
+  "version": "1.1.0",
+  "description": "Convert Common Log Format (CLF) into more useful (and human-readable) JSON and/or CSV.",
   "main": "index.js",
   "keywords": [
     "CLF",
