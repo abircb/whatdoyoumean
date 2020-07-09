@@ -1,5 +1,3 @@
-'use strict'
-
 const wdymCSV = require('./writers/wdymCSV')
 const wdymJSON = require('./writers/wdymJSON')
 

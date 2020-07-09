@@ -8,3 +8,5 @@ class IncorrectFormatError extends Error {
     Error.captureStackTrace(this, IncorrectFormatError)
   }
 }
+
+module.exports = IncorrectFormatError

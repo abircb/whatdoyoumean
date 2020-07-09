@@ -3,6 +3,7 @@
 const WDYM = require('./wdym')
 const { parse } = require('date-fns')
 const IncorrectFormatError = require('../custom/IncorrectFormatError')
+const ValidationError = require('../custom/ValidationError')
 const messages = require('../custom/messages')
 
 class WDYM_JSON extends WDYM {
@@ -19,7 +20,7 @@ class WDYM_JSON extends WDYM {
       const json = this.toJSON(lines)
       this.push(JSON.stringify(json))
     } catch (err) {
-      messages.incorrectFormatError()
+      messages.incorrectFormatError(err.message)
       process.exit()
     }
     callback()
@@ -33,9 +34,19 @@ class WDYM_JSON extends WDYM {
    */
   toJSON(clf) {
     let json = { log: [] }
+
     clf.forEach((line) => {
       const matches = super.isCLF(line)
       if (matches) {
+        if (
+          !super.validateIP(matches[1]) ||
+          !super.validateHTTPStatusCode(matches[6])
+        ) {
+          throw new ValidationError(
+            'One or more of the logs failed to validate'
+          )
+        }
+
         const serverLog = {
           remoteHost: matches[1],
           remoteLogName: matches[2],
@@ -45,14 +56,18 @@ class WDYM_JSON extends WDYM {
               ? this._parseDate(matches[4])
               : 'unreadable',
           request: matches[5],
-          status: Number(matches[6]) || 'Invalid Status Code',
+          status: Number(matches[6]),
           size: Number(matches[7]) || 0,
         }
+
         json.log.push(serverLog)
       } else {
-        throw new IncorrectFormatError()
+        throw new IncorrectFormatError(
+          'The log is not in Common Log Format (CLF)'
+        )
       }
     })
+
     return json
   }
 

@@ -22,11 +22,8 @@ function argsError() {
   )
 }
 
-function incorrectFormatError() {
-  console.error(
-    chalk.red.bold('ERROR'),
-    'The log is not in Common Log Format (CLF)'
-  )
+function incorrectFormatError(message) {
+  console.error(chalk.red.bold('ERROR'), message)
 }
 
 function fatalError() {
