@@ -4,9 +4,10 @@ const arg = require('arg')
 const fs = require('fs')
 const { pipeline } = require('stream')
 
-const wdym = require('../')
-const writer = new wdym()
+const wdymJSON = require('../').json
+const wdymCSV = require('../').csv
 const messages = require('../custom/messages')
+const WDYM_CSV = require('../writers/wdymCSV')
 
 /**
  * Parses command line arguments and deciphers meaning of the command.
@@ -20,6 +21,7 @@ function decipherMeaning(rawArgs) {
       {
         '--write': Boolean,
         '--version': Boolean,
+        '--csv': Boolean,
       },
       {
         argv: rawArgs,
@@ -32,9 +34,13 @@ function decipherMeaning(rawArgs) {
   }
 
   try {
-    writeStream = args['--write']
-      ? fs.createWriteStream('./output.json')
-      : process.stdout
+    if (args['--write']) {
+      writeStream = args['--csv']
+        ? fs.createWriteStream('./output.csv')
+        : fs.createWriteStream('./output.json')
+    } else {
+      writeStream = process.stdout
+    }
   } catch (err) {
     messages.fatalErrorMessage()
     process.exit()
@@ -45,7 +51,7 @@ function decipherMeaning(rawArgs) {
   } else if (args._.length > 0) {
     transformFile(args, writeStream)
   } else {
-    write(process.stdin, writeStream)
+    write(process.stdin, writeStream, { default: !args['--csv'] })
   }
 }
 
@@ -58,7 +64,7 @@ function transformFile(args, writeStream) {
   const path = args['_'][0]
   try {
     const readStream = fs.createReadStream(path)
-    write(readStream, writeStream)
+    write(readStream, writeStream, { default: !args['--csv'] })
   } catch (err) {
     messages.fatalErrorMessage()
     process.exit()
@@ -66,14 +72,15 @@ function transformFile(args, writeStream) {
 }
 
 /**
- * Pipes between streams — converting CLF to JSON, catching errors, and properly cleaning up.
+ * Pipes between streams — converting CLF to JSON/CSV, catching errors, and properly cleaning up.
  * @param {stream.Readable} source - the source to read CLF data from
  * @param {stream.Writable} destination - the destination for writing data
  */
-function write(source, destination) {
+function write(source, destination, options) {
+  const writer = options.default ? wdymJSON : wdymCSV
   pipeline(source, writer, destination, (err) => {
     if (err) {
-      messages.fatalErrorMessage()
+      messages.fatalError()
       process.exit()
     } else {
       messages.successfulWrite()

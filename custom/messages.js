@@ -10,7 +10,7 @@ function successfulWrite() {
   console.log(
     logSymbols.success,
     chalk.green.bold('SUCCESSFUL'),
-    'Written to output.json'
+    'Written to output file'
   )
 }
 
@@ -22,18 +22,15 @@ function argsError() {
   )
 }
 
-function incorrectFormatError() {
-  console.error(
-    chalk.red.bold('ERROR'),
-    'The log is not in Common Log Format (CLF)'
-  )
+function incorrectFormatError(message) {
+  console.error(chalk.red.bold('ERROR'), message)
 }
 
 function fatalError() {
   console.error(
     logSymbols.error,
     chalk.bold.red('ERROR'),
-    'An error occurred while processing the log'
+    'An error occurred while processing the log file'
   )
   console.error(
     logSymbols.info,
