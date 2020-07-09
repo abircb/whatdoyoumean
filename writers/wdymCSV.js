@@ -3,16 +3,21 @@
 const WDYM = require('./wdym')
 const wdymJSON = require('./wdymJSON')
 const writer = new wdymJSON()
-const createCSVStringifier = require('csv-writer').createObjectCsvStringifier
 const messages = require('../custom/messages')
+const createCSVStringifier = require('csv-writer').createObjectCsvStringifier
 
 class WDYM_CSV extends WDYM {
+  /**
+   * Transforms input stream in Common Log Format into useful CSV.
+   * @param {stream.Readable} chunk - the input stream of data
+   * @param {String} encoding - character encoding of the chunk
+   * @param {Function} callback - called when processing is complete for the supplied chunk
+   */
   _transform(chunk, encoding, callback) {
     const input = chunk.toString()
     const lines = input.split(/\n/)
     try {
-      const json = writer.toJSON(lines)
-      const csv = this.toCSV(json.log)
+      const csv = this.toCSV(lines)
       this.push(csv)
     } catch (err) {
       messages.incorrectFormatError(err.message)
@@ -21,15 +26,28 @@ class WDYM_CSV extends WDYM {
     callback()
   }
 
-  toCSV(serverLog) {
-    const schema = this._getCSVSchema(serverLog)
+  /**
+   * Parses the CLF logs and converts them to CSV.
+   * @param {Array} clf - the CLF Logs
+   * @throws {IncorrectFormatError}
+   * @returns {String} - the logs as a CSV string
+   */
+  toCSV(clf) {
+    const json = writer.toJSON(clf)
+    const schema = this._getCSVSchema(json)
     const csvStringifier = createCSVStringifier({ header: schema })
     return csvStringifier
       .getHeaderString()
-      .concat(csvStringifier.stringifyRecords(serverLog))
+      .concat(csvStringifier.stringifyRecords(json.log))
   }
 
-  _getCSVSchema(serverLog) {
+  /**
+   * @param {Object} - the parsed CLF logs in JSON
+   * @returns {Array} - an array of objects defining the schema to be used by the stringifier
+   * https://github.com/ryu1kn/csv-writer#createobjectcsvstringifierparams
+   */
+  _getCSVSchema(json) {
+    const serverLog = json.log
     const keys = Object.keys(serverLog[0])
     const titles = [
       'REMOTE HOST',

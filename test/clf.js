@@ -1,8 +1,7 @@
 const should = require('should')
 const wdym = require('../writers/wdym')
 const wdymJSON = require('../writers/wdymJSON')
-const wdymCSV = require('../writers/wdymCSV')
-const IncorrectFormatError = require('../custom/IncorrectFormatError')
+const ValidationError = require('../custom/ValidationError')
 
 describe('One-line CLF log', () => {
   it('should convert to JSON without error', () => {
@@ -132,7 +131,7 @@ describe('CLF Log with an invalid IP address', () => {
     const match = transform.isCLF(
       'a - g [July 7, 2020 16:91 GMT] "GET /ss.html HTTP/1.1" 200 2326'
     )
-    should(transform.validateIP(match[1])).be.exactly(null)
+    should(transform._validateIP(match[1])).be.exactly(null)
   })
 })
 
@@ -143,7 +142,7 @@ describe('CLF Log with an invalid HTTP status code', () => {
     const match = transform.isCLF(
       '127.0.0.1 - g [Wed, July 7, 2020 16:91 GMT] "GET /ss.html HTTP/1.1" 812 2152'
     )
-    should(transform.validateHTTPStatusCode(match[6])).be.exactly(null)
+    should(transform._validateHTTPStatusCode(match[6])).be.exactly(null)
   })
 })
 
@@ -172,5 +171,28 @@ describe('CLF Log with a failed request and non-numeric bytes', () => {
     transform.write(
       '127.0.0.1 - g [Wed, July 7, 2020 16:91 GMT] "GET /ss.html HTTP/1.1" 404 -'
     )
+  })
+})
+
+describe('Valid CLF Log in strict mode', () => {
+  it('should parse without an error', () => {
+    const transform = new wdym()
+    const match = transform.isCLF(
+      '127.0.0.1 - g [Wed, July 7, 2020 16:91 GMT] "GET /ss.html HTTP/1.1" 404 -',
+      { strict: true }
+    )
+    match.should.not.be.exactly(null)
+  })
+})
+
+describe('Invalid CLF Log in strict mode', () => {
+  it('should throw ValidationError', () => {
+    const transform = new wdym()
+    should(
+      transform.isCLF(
+        '127 - g [Wed, July 7, 2020 16:91 GMT] "GET /ss.html HTTP/1.1" 404 -',
+        { strict: true }
+      )
+    ).be.exactly(null)
   })
 })
