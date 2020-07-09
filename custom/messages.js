@@ -30,7 +30,7 @@ function fatalError() {
   console.error(
     logSymbols.error,
     chalk.bold.red('ERROR'),
-    'An error occurred while processing the log'
+    'An error occurred while processing the log file'
   )
   console.error(
     logSymbols.info,

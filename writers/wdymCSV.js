@@ -15,7 +15,7 @@ class WDYM_CSV extends WDYM {
       const csv = this.toCSV(json.log)
       this.push(csv)
     } catch (err) {
-      messages.incorrectFormatError()
+      messages.incorrectFormatError(err.message)
       process.exit()
     }
     callback()
