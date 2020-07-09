@@ -3,11 +3,11 @@
 
 # wdym
 
-[API Documentation](https://github.com/abircb/wdym/wiki/API-Documentation)
+**See also**: [Node.js API Documentation](https://github.com/abircb/wdym/wiki/API-Documentation)
 
-Convert [Common Log Format](https://httpd.apache.org/docs/1.3/logs.html#common) into more useful (and human-readable) JSON and/or CSV. Especially handy when analysing server log files for activity and performance. 
+Convert [Common Log Format](https://httpd.apache.org/docs/1.3/logs.html#common) into more useful (and human-readable) JSON and/or CSV. Especially handy when analysing server log files for activity and performance.
 
-Can be used both as a command line executable and as a Node.js library.
+Can be used both as a [Node.js library](https://github.com/abircb/wdym/wiki/API-Documentation) and as a [command line executable](#command-line-executable).
 
 For example, standard log input such as
 
@@ -45,29 +45,6 @@ $ npm install -g wdym
 
 ## Usage
 
-### Command Line Executable
-
-```cli
-$ wdym log.txt --csv --write
-```
-converts the logs into CSV and writes to an output file `output.csv`. 
-
-Defaults to JSON, remove the `--csv` argument to write to a JSON file. Remove the `--write` argument to write to `stdout`. 
-
-__Example__:
-```cli
-$ wdym log.txt
-```
-converts the logs into JSON and prints to `stdout`.
-
-### Piped Input
-
-```cli
-$ cat log.txt | wdym --write
-```
-
-writes JSON output to `output.json`.
-
 ### Node.js Library
 
 ```js
@@ -81,6 +58,36 @@ pipeline(source, wdymCSV, destination, (err) => {
     console.log('Pipeline succeeded.')
   }
 }
+//=>
+//  REMOTE HOST,REMOTE LOG NAME,USER ID,DATE,REQUEST,HTTP STATUS CODE,SIZE
+//  127.0.0.1,-,g,Fri Apr 27 2012 09:57:36 GMT+0530 (India Standard Time),GET /ss.html HTTP/1.1,200,2326
+//  Pipeline succeeded.
 ```
 
-**See also**: [API Documentation](https://github.com/abircb/wdym/wiki/API-Documentation)
+[API Documentation](https://github.com/abircb/wdym/wiki/API-Documentation)
+
+### Command Line Executable
+
+```cli
+$ wdym log.txt --csv --write
+```
+
+converts the logs into CSV and writes to an output file `output.csv`.
+
+Defaults to JSON, remove the `--csv` argument to write to a JSON file. Remove the `--write` argument to write to `stdout`.
+
+**Example**:
+
+```cli
+$ wdym log.txt
+```
+
+converts the logs into JSON and prints to `stdout`.
+
+### Piped Input
+
+```cli
+$ cat log.txt | wdym --write
+```
+
+writes JSON output to `output.json`.

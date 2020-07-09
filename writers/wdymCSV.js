@@ -15,9 +15,8 @@ class WDYM_CSV extends WDYM {
    */
   _transform(chunk, encoding, callback) {
     const input = chunk.toString()
-    const lines = input.split(/\n/)
     try {
-      const csv = this.toCSV(lines)
+      const csv = this.toCSV(input)
       this.push(csv)
     } catch (err) {
       messages.incorrectFormatError(err.message)
@@ -28,7 +27,7 @@ class WDYM_CSV extends WDYM {
 
   /**
    * Parses the CLF logs and converts them to CSV.
-   * @param {Array} clf - the CLF Logs
+   * @param {String} clf - the CLF Logs
    * @throws {IncorrectFormatError}
    * @returns {String} - the logs as a CSV string
    */

@@ -7,7 +7,6 @@ const { pipeline } = require('stream')
 const wdymJSON = require('../').json
 const wdymCSV = require('../').csv
 const messages = require('../custom/messages')
-const WDYM_CSV = require('../writers/wdymCSV')
 
 /**
  * Parses command line arguments and deciphers meaning of the command.
@@ -22,7 +21,7 @@ function decipherMeaning(rawArgs) {
         '--write': Boolean,
         '--csv': Boolean,
         '--version': Boolean,
-        '-v': '--version'
+        '-v': '--version',
       },
       {
         argv: rawArgs,

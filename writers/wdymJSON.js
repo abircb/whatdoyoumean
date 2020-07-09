@@ -15,9 +15,8 @@ class WDYM_JSON extends WDYM {
    */
   _transform(chunk, encoding, callback) {
     const input = chunk.toString()
-    const lines = input.split(/\n/)
     try {
-      const json = this.toJSON(lines)
+      const json = this.toJSON(input)
       this.push(JSON.stringify(json))
     } catch (err) {
       messages.incorrectFormatError(err.message)
@@ -28,15 +27,17 @@ class WDYM_JSON extends WDYM {
 
   /**
    * Parses the CLF logs and converts them to a single JavaScript Object.
-   * @param {Array} clf - the CLF Logs
+   * @param {String} clf - the CLF Logs
    * @throws {IncorrectFormatError} - when one (or more) of the logs is not in CLF
    * @throws {ValidationError} - when one (or more) of the logs' components fail to validate
    * @returns {Object}
    */
   toJSON(clf) {
+    const lines = clf.split(/\n/)
     let json = { log: [] }
-    clf.forEach((line) => {
+    lines.forEach((line) => {
       const matches = super.isCLF(line)
+      console.log(matches)
       if (matches) {
         if (
           !super._validateIP(matches[1]) ||

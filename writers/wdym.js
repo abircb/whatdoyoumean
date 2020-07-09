@@ -13,6 +13,7 @@ class WDYM extends stream.Transform {
    * If in strict mode, performs validation on the log's components.
    * https://httpd.apache.org/docs/1.3/logs.html
    * @param {String} line - a line of the input stream
+   * @param {Object} [options]
    * @returns {Array}
    */
   isCLF(line, options = null) {
