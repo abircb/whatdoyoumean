@@ -38,20 +38,19 @@ or
 
 ![CSV](github-assets/csv.png)
 
-
 ## Usage
 
 ### Node.js Library
 
-__Installation__:
+**Installation**:
 
 ```cli
 $ npm install --save-dev wdym
 ```
 
-__Getting Started__:
+**Getting Started**:
 
-Here is a simple example to convert an incoming `stream` of CLF logs to CSV using the Node.js Streams API.
+Here is a simple example to convert an incoming `stream` of CLF logs to CSV using `wdym` and the Node.js Streams API.
 
 ```js
 const wdymCSV = require('wdym').csv
@@ -70,33 +69,33 @@ pipeline(source, wdymCSV, destination, (err) => {
 //  Pipeline succeeded.
 ```
 
-__See more__: [API Documentation](https://github.com/abircb/wdym/wiki/API-Documentation)
+**See more**: [API Documentation](https://github.com/abircb/wdym/wiki/API-Documentation)
 
 ### Command Line Executable
 
-__Installation__:
+**Installation**:
 
 ```cli
 $ npm install -g wdym
 ```
 
-__Getting started__:
+**Getting started**:
 
 ```cli
 $ wdym --help
 
   Usage
     $ wdym <file> <options>
-    
-  Default behaviour (no options): simply converts log file contents into JSON and writes to the shell (via stdout) 
+
+  Default behaviour (no options): simply converts log file contents into JSON and writes to the shell (via stdout)
 
   Options
        --csv               convert log file into CSV
        --write             write to file (./output.csv or ./output.json)
    -v, --version           output the version number
    -h, --help              usage information
-   
-   
+
+
   Examples
     $ wdym log.txt --write         converts log file into JSON and writes to output.json
     $ wdym log.txt --csv           converts log file contents into CSV and writes to shell
@@ -105,7 +104,7 @@ $ wdym --help
 
 ### Piped Input
 
-__Example__:
+**Example**:
 
 ```cli
 $ cat log.txt | wdym --write

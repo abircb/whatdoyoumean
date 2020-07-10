@@ -105,6 +105,6 @@ dist
 
 # MISC
 package-lock.json
-content/
+content
 output.json
 output.csv
