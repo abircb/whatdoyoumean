@@ -63,9 +63,10 @@ pipeline(source, wdymCSV, destination, (err) => {
     console.log('Pipeline succeeded.')
   }
 }
-//=>
+//  127.0.0.1 - g [27/Apr/2012:09:57:36 +0000] "GET /ss.html HTTP/1.1"  200 2326
+// =>
 //  REMOTE HOST,REMOTE LOG NAME,USER ID,DATE,REQUEST,HTTP STATUS CODE,SIZE
-//  127.0.0.1,-,g,Fri Apr 27 2012 09:57:36 GMT+0530 (India Standard Time),GET /ss.html HTTP/1.1,200,2326
+//  127.0.0.1,-,g,Fri Apr 27 2012 09:57:36 GMT+0000 (Greenwich Mean Time),GET /ss.html HTTP/1.1,200,2326
 //  Pipeline succeeded.
 ```
 
