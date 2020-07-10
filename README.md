@@ -42,13 +42,13 @@ or
 
 ### Node.js Library
 
-**Installation**:
+#### Installation:
 
 ```cli
 $ npm install --save-dev wdym
 ```
 
-**Getting Started**:
+#### Getting started:
 
 Here is a simple example to convert an incoming `stream` of CLF logs to CSV using `wdym` and the Node.js Streams API.
 
@@ -74,13 +74,13 @@ pipeline(source, wdymCSV, destination, (err) => {
 
 ### Command Line Executable
 
-**Installation**:
+#### Installation:
 
 ```cli
 $ npm install -g wdym
 ```
 
-**Getting started**:
+#### Getting started:
 
 ```cli
 $ wdym --help
