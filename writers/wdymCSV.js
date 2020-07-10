@@ -28,7 +28,8 @@ class WDYM_CSV extends WDYM {
   /**
    * Parses the CLF logs and converts them to CSV.
    * @param {String} clf - the CLF Logs
-   * @throws {IncorrectFormatError}
+   * @throws {IncorrectFormatError} - when one (or more) of the logs is not in CLF
+   * @throws {ValidationError} - when one (or more) of the logs' components fail to validate
    * @returns {String} - the logs as a CSV string
    */
   toCSV(clf) {

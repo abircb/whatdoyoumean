@@ -1,4 +1,5 @@
-[![npm](https://img.shields.io/npm/v/wdym)](https://www.npmjs.com/package/wdym)
+[![npm version](https://badge.fury.io/js/wdym.svg)](https://badge.fury.io/js/wdym)
+![npm](https://img.shields.io/npm/dt/wdym)
 [![Build Status](https://travis-ci.com/abircb/wdym.svg?token=kBvypWapbvpPYcC9Jrdw&branch=master)](https://travis-ci.com/abircb/wdym)
 
 # wdym
@@ -37,15 +38,20 @@ or
 
 ![CSV](github-assets/csv.png)
 
-## Installation
-
-```cli
-$ npm install -g wdym
-```
 
 ## Usage
 
 ### Node.js Library
+
+__Installation__:
+
+```cli
+$ npm install --save-dev wdym
+```
+
+__Getting Started__:
+
+Here is a simple example to convert an incoming `stream` of CLF logs to CSV using the Node.js Streams API.
 
 ```js
 const wdymCSV = require('wdym').csv
@@ -64,30 +70,45 @@ pipeline(source, wdymCSV, destination, (err) => {
 //  Pipeline succeeded.
 ```
 
-[API Documentation](https://github.com/abircb/wdym/wiki/API-Documentation)
+__See more__: [API Documentation](https://github.com/abircb/wdym/wiki/API-Documentation)
 
 ### Command Line Executable
 
-```cli
-$ wdym log.txt --csv --write
-```
-
-converts the logs into CSV and writes to an output file `output.csv`.
-
-Defaults to JSON, remove the `--csv` argument to write to a JSON file. Remove the `--write` argument to write to `stdout` (standard out).
-
-**Example**:
+__Installation__:
 
 ```cli
-$ wdym log.txt
+$ npm install -g wdym
 ```
 
-converts the logs into JSON and prints to to the shell (via `stdout`).
+__Getting started__:
+
+```cli
+$ wdym --help
+
+  Usage
+    $ wdym <file> <options>
+    
+  Default behaviour (no options): simply converts log file contents into JSON and writes to the shell (via stdout) 
+
+  Options
+       --csv               convert log file into CSV
+       --write             write to file (./output.csv or ./output.json)
+   -v, --version           output the version number
+   -h, --help              usage information
+   
+   
+  Examples
+    $ wdym log.txt --write         converts log file into JSON and writes to output.json
+    $ wdym log.txt --csv           converts log file contents into CSV and writes to shell
+    $ wdym log.txt --csv --write   converts log file contents into CSV and writes to output.csv
+```
 
 ### Piped Input
+
+__Example__:
 
 ```cli
 $ cat log.txt | wdym --write
 ```
 
-writes JSON output to `output.json`.
+converts log file into JSON and writes to `output.json`

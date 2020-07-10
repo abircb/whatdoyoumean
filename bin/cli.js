@@ -22,6 +22,8 @@ function decipherMeaning(rawArgs) {
         '--csv': Boolean,
         '--version': Boolean,
         '-v': '--version',
+        '--help': Boolean,
+        '-h': '--help',
       },
       {
         argv: rawArgs,
@@ -46,7 +48,9 @@ function decipherMeaning(rawArgs) {
     process.exit()
   }
 
-  if (args['--version']) {
+  if (args['--help']) {
+    messages.usageInfo()
+  } else if (args['--version']) {
     messages.version()
   } else if (args._.length > 0) {
     transformFile(args, writeStream)

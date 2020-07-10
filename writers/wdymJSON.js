@@ -37,7 +37,6 @@ class WDYM_JSON extends WDYM {
     let json = { log: [] }
     lines.forEach((line) => {
       const matches = super.isCLF(line)
-      console.log(matches)
       if (matches) {
         if (
           !super._validateIP(matches[1]) ||
