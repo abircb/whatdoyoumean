@@ -9,12 +9,11 @@ const wdymCSV = require('../').csv
 const messages = require('../custom/messages')
 
 /**
- * Parses command line arguments and deciphers meaning of the command.
+ * Parses command line arguments
  * @param {Array} rawArgs - raw command line arguments
  */
-function decipherMeaning(rawArgs) {
-  let args,
-    writeStream = undefined
+function parse(rawArgs) {
+  let args = undefined
   try {
     args = arg(
       {
@@ -35,27 +34,38 @@ function decipherMeaning(rawArgs) {
     process.exit()
   }
 
-  try {
-    if (args['--write']) {
-      writeStream = args['--csv']
-        ? fs.createWriteStream('./output.csv')
-        : fs.createWriteStream('./output.json')
-    } else {
-      writeStream = process.stdout
-    }
-  } catch (err) {
-    messages.fatalErrorMessage()
-    process.exit()
-  }
+  decipherMeaning(args)
+}
 
+/**
+ * Uses (parsed) command line arguments to decipher meaning of the command.
+ * @param {Object} args
+ */
+function decipherMeaning(args) {
   if (args['--help']) {
     messages.usageInfo()
   } else if (args['--version']) {
     messages.version()
-  } else if (args._.length > 0) {
-    transformFile(args, writeStream)
   } else {
-    write(process.stdin, writeStream, { default: !args['--csv'] })
+    let writeStream = undefined
+    try {
+      if (args['--write']) {
+        writeStream = args['--csv']
+          ? fs.createWriteStream('./output.csv')
+          : fs.createWriteStream('./output.json')
+      } else {
+        writeStream = process.stdout
+      }
+    } catch (err) {
+      messages.fatalError()
+      process.exit()
+    }
+
+    if (args._.length > 0) {
+      transformFile(args, writeStream)
+    } else {
+      write(process.stdin, writeStream, { default: !args['--csv'] })
+    }
   }
 }
 
@@ -92,4 +102,4 @@ function write(source, destination, options) {
   })
 }
 
-module.exports = decipherMeaning
+module.exports = parse
