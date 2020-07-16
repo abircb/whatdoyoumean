@@ -4,6 +4,7 @@ const WDYM = require('./wdym')
 const wdymJSON = require('./wdymJSON')
 const writer = new wdymJSON()
 const messages = require('../custom/messages')
+
 const createCSVStringifier = require('csv-writer').createObjectCsvStringifier
 
 class WDYM_CSV extends WDYM {

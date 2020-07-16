@@ -1,5 +1,5 @@
-const wdymCSV = require('./writers/wdymCSV')
 const wdymJSON = require('./writers/wdymJSON')
+const wdymCSV = require('./writers/wdymCSV')
 
 /**
  * What do you mean?

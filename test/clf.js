@@ -1,7 +1,6 @@
 const should = require('should')
 const wdym = require('../writers/wdym')
 const wdymJSON = require('../writers/wdymJSON')
-const ValidationError = require('../custom/ValidationError')
 
 describe('One-line CLF log', () => {
   it('should convert to JSON without error', () => {

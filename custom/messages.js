@@ -1,6 +1,7 @@
+const release = require('../package.json').version
+
 const chalk = require('chalk')
 const logSymbols = require('log-symbols')
-const release = require('../package.json').version
 
 function version() {
   console.log(logSymbols.info, release)

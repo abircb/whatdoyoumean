@@ -108,3 +108,4 @@ package-lock.json
 content
 output.json
 output.csv
+coverage

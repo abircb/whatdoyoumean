@@ -1,10 +1,11 @@
 'use strict'
 
 const WDYM = require('./wdym')
-const { parse } = require('date-fns')
 const IncorrectFormatError = require('../custom/IncorrectFormatError')
 const ValidationError = require('../custom/ValidationError')
 const messages = require('../custom/messages')
+
+const { parse } = require('date-fns')
 
 class WDYM_JSON extends WDYM {
   /**
