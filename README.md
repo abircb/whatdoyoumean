@@ -5,7 +5,7 @@
 
 # wdym
 
-**See also**: [Node.js API Documentation](https://github.com/abircb/wdym/wiki/API-Documentation)
+**See also**: [API Documentation for Node.js applications](https://github.com/abircb/wdym/wiki/API-Documentation)
 
 Convert [Common Log Format](https://httpd.apache.org/docs/1.3/logs.html#common) into more useful (and human-readable) JSON and/or CSV. Especially handy when analysing server log files for activity and performance.
 
@@ -37,7 +37,7 @@ would be converted to
 
 or
 
-![CSV](github-assets/csv.png)
+![CSV](.github/assets/csv.png)
 
 ## Usage
 
