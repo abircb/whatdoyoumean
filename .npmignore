@@ -109,5 +109,5 @@ content
 output.json
 output.csv
 coverage
-github-assets
+.github
 *.config*
