@@ -46,7 +46,7 @@ or
 #### Installation:
 
 ```cli
-$ npm install --save-dev wdym
+$ npm install wdym
 ```
 
 #### Getting started:
