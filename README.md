@@ -51,7 +51,7 @@ $ npm install wdym
 
 #### Getting started:
 
-Here is a simple example to convert an incoming `stream` of CLF logs to CSV using `wdym` and the Node.js Streams API.
+Here is a simple example to convert an incoming `stream` of CLF logs to CSV using `wdym` and the Node.js [Stream](https://nodejs.org/api/stream.html) interface.
 
 ```js
 const wdymCSV = require('wdym').csv
