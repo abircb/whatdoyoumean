@@ -1,7 +1,7 @@
 [![npm version](https://badge.fury.io/js/wdym.svg)](https://badge.fury.io/js/wdym)
 ![npm](https://img.shields.io/npm/dt/wdym)
 [![Build Status](https://travis-ci.com/abircb/wdym.svg?token=kBvypWapbvpPYcC9Jrdw&branch=master)](https://travis-ci.com/abircb/wdym)
-[![stable](http://badges.github.io/stability-badges/dist/stable.svg)](http://github.com/badges/stability-badges)
+![license](https://img.shields.io/npm/l/wdym)
 
 # wdym
 
