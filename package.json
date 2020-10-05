@@ -15,14 +15,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/abircb/wdym.git"
+    "url": "git+https://github.com/abircb/whatdoyoumean.git"
   },
   "author": "Abir Bhushan",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/abircb/wdym/issues"
+    "url": "https://github.com/abircb/whatdoyoumean/issues"
   },
-  "homepage": "https://github.com/abircb/wdym#readme",
+  "homepage": "https://github.com/abircb/whatdoyoumean#readme",
   "devDependencies": {
     "mocha": "^8.0.1",
     "prettier": "^2.0.5",
